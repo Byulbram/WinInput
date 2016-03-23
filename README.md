@@ -4,6 +4,7 @@ Byulbram Studio / ChungKang College of Cultural Industry
 
 Windows input system for Unity3D using GetAsyncKeyState() from Windows user32.dll 
 to avoid not-english IME problems in Unity3D Input.GetKey() function.
+You can use Unity Keycode in this WinInput.GetKey() 
 
 How To Use:
   Just insert "using WindowsInput" to your code 
