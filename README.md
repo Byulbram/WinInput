@@ -9,3 +9,6 @@ How To Use:
   Just insert "using WindowsInput" to your code 
   and use WinInput.GetKey() instead of Input.GetKey()
   This will work on Windows PC Platform 
+  
+Sample Scene:
+  https://github.com/Byulbram/WinInputSample
