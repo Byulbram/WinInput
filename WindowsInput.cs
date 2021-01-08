@@ -22,7 +22,10 @@ namespace WindowsInput
     {
 #if (UNITY_STANDALONE_WIN && !UNITY_EDITOR_OSX)
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true, CallingConvention = CallingConvention.Winapi)]
-        protected static extern short GetAsyncKeyState(int keyCode);
+
+        protected static extern short GetAsyncKeyState(int keyCode);        
+        private static bool[] m_PrevKeyStateDown = new bool[(int)KeyCode.Joystick8Button19];
+        private static bool[] m_PrevKeyStateUp = new bool[(int)KeyCode.Joystick8Button19];
 
         // Mapper for Unity KeyCode to Virtual KeyCode with full key set
         private static int KeyCodeToVkeyFullSet(KeyCode key) 
@@ -231,14 +234,50 @@ namespace WindowsInput
         }
 
         // GetKeyDown with GetAsyncKeyState for IME Alphabets
+        // Changed 2021.01.08: Thanks to Flashscope
         public static bool GetKeyDown(KeyCode key)
         {
 #if (UNITY_STANDALONE_WIN && !UNITY_EDITOR_OSX)
-            return (GetAsyncKeyState(KeyCodeToVkey(key)) == -32767);
+            bool result = false;
+            int keyState = GetAsyncKeyState(KeyCodeToVkeyFullSet(key));
+            if (keyState == 0 || keyState == 1)
+            {
+                m_PrevKeyStateDown[(int)key] = false;                
+            }
+            else 
+            {
+                if (m_PrevKeyStateDown[(int)key] == false)
+                    result = true;
+                m_PrevKeyStateDown[(int)key] = true;
+            }
+            return result;
 #else
-            return Input.GetKeyDown(key);
+return Input.GetKeyDown(key);
 #endif
         }
+
+        public static bool GetKeyUp(KeyCode key)
+        {
+#if (UNITY_STANDALONE_WIN && !UNITY_EDITOR_OSX)
+            bool result = false;
+            int keyState = GetAsyncKeyState(KeyCodeToVkeyFullSet(key));
+
+            if (keyState != 0 && keyState != 1)
+            {
+                m_PrevKeyStateUp[(int)key] = true;
+            }
+            else
+            {
+                if (m_PrevKeyStateUp[(int)key] == true)
+                    result = true;
+                m_PrevKeyStateUp[(int)key] = false;
+            }
+            return result;
+#else
+return Input.GetKeyUp(key);
+#endif
+        }
+
 
         // GetKey with GetAsyncKeyState for full keycode
         public static bool GetKeyFullCover(KeyCode key)
