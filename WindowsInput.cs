@@ -219,13 +219,15 @@ namespace WindowsInput
         {
 #if (UNITY_STANDALONE_WIN && !UNITY_EDITOR_OSX)
             int VK = KeyCodeToVkey(key);
-            if (VK != 0)
-                return (GetAsyncKeyState(VK) != 0); 
-            else
-                return Input.GetKey(key);
+
+            //Changed 2021.01.08: Thanks to 우유들컴(4joseph)
+            var ret = GetAsyncKeyState(VK);
+            return ret != 0 && ret != 1;
+            
 #else
             return Input.GetKey(key);
 #endif            
+
         }
 
         // GetKeyDown with GetAsyncKeyState for IME Alphabets
