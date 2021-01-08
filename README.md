@@ -15,8 +15,10 @@ How To Use:
 Sample Scene:
   https://github.com/Byulbram/WinInputSample
 
-Update Log
+Update Log:
 1.0.0 (2016)
+
 1.0.1 (2021.01.08): Fixed Bug for Getkey not released. thanks to 우유들컴(4joseph)
+
 1.0.2 (2021.01.08): Added GetKeyDown and GetKeyUp function. thanks to FlashScape
 
